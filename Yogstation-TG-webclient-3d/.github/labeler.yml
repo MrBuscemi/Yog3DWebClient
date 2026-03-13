@@ -1,0 +1,50 @@
+Admin:
+  - 'code/modules/admin/**'
+
+# Any file within the config subfolder
+Config: 
+  - 'config/**'
+
+Dependencies:
+  - '**/package.json'
+  - '**/package-lock.json'
+  - '**/yarn.lock'
+
+# When the .DME is changed
+DME Edit:
+  - './*.dme'
+  - '**/*.dme'
+
+# Changes to a .dmi or anything in the icons folder
+Sprites: 
+  - '**/*.dmi'
+  - 'icons/*.dmi'
+
+# Javascript changes
+Javascript: 
+  - '**/*.js'
+
+# Changes to a .dmm or anything in the _maps folder or any of the map definitions
+Mapping: 
+  - '**/*.dmm'
+  - '_maps/**'
+  - 'code/datums/ruins/**'
+  - 'code/datums/shuttles.dm'
+
+# Changes to a .ogg or anything in the sound folder
+Sound: 
+  - '**/*.ogg'
+  - 'sound/**'
+
+# Changes to the SQL subfolder
+SQL: 
+  - 'SQL/**'
+
+# Encompasses both the tgui and the tgui-next folder
+tgui: 
+  - 'tgui/**'
+  - 'tgui-next/**'
+
+# Changes to the .Github folder
+Github: 
+  - '.github/**'
