@@ -47,6 +47,7 @@ export class SvgUi {
 		document.body.appendChild(this.status_overlay);
 
 		window.addEventListener("mousedown", this.mousedown);
+		window.addEventListener("contextmenu", e => e.preventDefault());
 	}
 
 	set_status_overlay(str : string|null) {
@@ -497,7 +498,8 @@ export class SvgUi {
 		let msg = new MessageBuilder(215);
 		msg.write_uint8(0).write_uint8(id);
 
-		let flags = event.buttons & 7;
+		const button_map: {[k: number]: number} = {0: 1, 1: 4, 2: 2};
+		let flags = (event.buttons | (button_map[event.button] ?? 0)) & 7;
 		if(event.shiftKey) flags |= 16;
 		if(event.ctrlKey) flags |= 8;
 		if(event.altKey) flags |= 32;
