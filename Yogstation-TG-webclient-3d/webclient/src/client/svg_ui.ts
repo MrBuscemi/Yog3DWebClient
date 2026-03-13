@@ -507,7 +507,9 @@ export class SvgUi {
 		
 		if(last_info) this.write_event(id, msg, last_info);
 		this.write_event(id, msg, info);
-		msg.write_string(info.params ?? "");
+		const button_param = event.button === 2 ? "right=1" : event.button === 1 ? "middle=1" : "left=1";
+		const full_params = [info.params, button_param].filter(Boolean).join(";");
+		msg.write_string(full_params);
 		this.client.websocket.send(msg.collapse());
 	}
 	write_event(id : number, msg : MessageBuilder, info : MouseInfo) {
