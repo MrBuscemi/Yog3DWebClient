@@ -67,6 +67,10 @@ export class ByondClient {
 				e.preventDefault();
 				return;
 			}
+			if(e.code == "KeyV") {
+				this.gl_holder.third_person_mode = !this.gl_holder.third_person_mode;
+				e.preventDefault();
+				return;
 			if(this.is_test_env) {
 				if(e.code == "ArrowUp") this.command(".north");
 				if(e.code == "ArrowDown") this.command(".south");
