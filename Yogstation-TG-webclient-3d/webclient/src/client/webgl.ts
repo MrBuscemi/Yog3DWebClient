@@ -124,7 +124,8 @@ export class GlHolder {
 		mat4.rotateZ(view, view, -this.camera_secondyaw);
 		mat4.rotateX(view, view, -this.camera_pitch);
 		mat4.rotateZ(view, view, -this.camera_yaw);
-		mat4.translate(view, view, vec3.scale(vec3.create(), this.camera_pos, -1));
+		const effective_pos = this.third_person_mode ? this.get_third_person_camera_pos() : this.camera_pos;
+		mat4.translate(view, view, vec3.scale(vec3.create(), effective_pos, -1));
 		mat4.invert(this.inv_view_matrix, this.view_matrix);
 		let act_camera_pos = this.inv_view_matrix.slice(12, 15) as vec3;
 
@@ -360,6 +361,19 @@ export class GlHolder {
 	get camera_actual_zoom() {
 		return (this.client.eye_sight & 0x8000) ? this.camera_zoom : 0;
 	}
+	third_person_mode = false;
+	third_person_distance = 5;
+	get_third_person_camera_pos() : vec3 {
+		const dist = this.third_person_distance;
+		const yaw = this.camera_yaw;
+		const pitch = this.camera_pitch;
+		return [
+			this.camera_pos[0] + Math.sin(yaw) * Math.cos(pitch) * dist,
+			this.camera_pos[1] - Math.cos(yaw) * Math.cos(pitch) * dist,
+			this.camera_pos[2] - Math.sin(pitch) * dist
+		] as vec3;
+	}
+	
 	draw_dist = 7.5;
 
 	current_vertex_attribs : number[] = [];
