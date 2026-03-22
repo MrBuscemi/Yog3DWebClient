@@ -1,3 +1,6 @@
+________________________________________________________________________
+FIX ADDED: Sorry for those that downloaded before I fixed a missing a file that was not uploaded. If your build fails for not haing a changlog.html, then go over to the HTML folder in the main repo here and download the changelog.html file to add to yours. That was my bad.
+________________________________________________________________________
 Hello!
 
 I am not the creator of the Yogstation 3D/Space Station 13 3D. That is all Monster860 who built it before the project got shut down a few years ago. I am just attempting to fix up what is possible so that anyone can try out this whenever they want. 
