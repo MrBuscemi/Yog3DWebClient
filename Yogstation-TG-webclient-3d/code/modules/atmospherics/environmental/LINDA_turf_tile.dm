@@ -33,6 +33,7 @@
 
 	var/list/atmos_overlay_types //gas IDs of current active gas overlays
 	var/atmos_e3d_overlay // current batch-overlay
+	var/active_rad_overlay
 	is_openturf = TRUE
 
 /turf/open/Initialize()
