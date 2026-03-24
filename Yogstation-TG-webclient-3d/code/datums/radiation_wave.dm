@@ -52,9 +52,9 @@
 	var/turf/open/T
 	for(var/atom/thing in atoms)
     	if(istype(thing, /turf/open))
-        	T = thing
-        	T.add_rad_e3d_overlay(strength)
-        	addtimer(CALLBACK(T, /turf/open/proc/remove_rad_e3d_overlay), 3 SECONDS)
+			T = thing
+			T.add_rad_e3d_overlay(strength)
+			addtimer(CALLBACK(T, /turf/open/proc/remove_rad_e3d_overlay), 3 SECONDS)
 
 	check_obstructions(atoms) // reduce our overall strength if there are radiation insulators
 
