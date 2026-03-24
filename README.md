@@ -1,20 +1,28 @@
+________________________________________________________________________
+FIX ADDED: Sorry for those that downloaded before I fixed a missing a file that was not uploaded. If your build fails for not haing a changlog.html, then go over to the HTML folder in the main repo here and download the changelog.html file to add to yours. That was my bad.
+________________________________________________________________________
 Hello!
 
 I am not the creator of the Yogstation 3D/Space Station 13 3D. That is all Monster860 who built it before the project got shut down a few years ago. I am just attempting to fix up what is possible so that anyone can try out this whenever they want. 
 
-I will be adding more and more tips and guides for stuff here to help anyone who wants to try it. A lot of stuff can be done in the admin panels that are unlocked for you to play with.
+I will later be adding more tips and guides for stuff here to help anyone who wants to try it. A lot of stuff can be done in the admin panels that are unlocked for you to play with.
 
 
 
                                                         Controls
 W,A,S,D =  movement
+
 TAB = Switch between mouse and camera movement modes
-V = Switch between 1st and 3rd Pprson modes
+
+V = Switch between 1st and 3rd Person modes
+
 1,2,3,4 = COMBAT INTENTS
+
 
 CTRL = LEFT CLICK = Grab whatever is selected
 
 RIGHT CLICK DOES NOT WORK YET = yeah this part sucks. Major thing that needs to be worked on somehow. Below is workaround
+
 ALT + LEFT CLICK =  Shows all items on a spot in top right of screen. A workaround for picking things up somewhere that has multiple things layered on top of each other.
 
 
