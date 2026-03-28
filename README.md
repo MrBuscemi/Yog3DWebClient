@@ -19,7 +19,7 @@ V = Switch between 1st and 3rd Person modes
 1,2,3,4 = COMBAT INTENTS
 
 
-CTRL = LEFT CLICK = Grab whatever is selected
+CTRL + LEFT CLICK = Grab whatever is selected
 
 RIGHT CLICK DOES NOT WORK YET = yeah this part sucks. Major thing that needs to be worked on somehow. Below is workaround
 
