@@ -185,10 +185,10 @@
 	active_rad_overlay = rad_image.appearance
 	add_overlay(active_rad_overlay)
 /turf/open/proc/remove_rad_e3d_overlay()
-    if(!active_rad_overlay)
-        return
-    cut_overlay(active_rad_overlay)
-    active_rad_overlay = null
+	if(!active_rad_overlay)
+		return
+	cut_overlay(active_rad_overlay)
+	active_rad_overlay = null
 
 /proc/typecache_of_gases_with_no_overlays()
 	. = list()
