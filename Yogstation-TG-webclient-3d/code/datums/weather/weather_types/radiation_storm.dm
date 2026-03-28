@@ -51,8 +51,14 @@
 	priority_announce("The station has entered the radiation belt. Please remain in a sheltered area until we have passed the radiation belt.", "Anomaly Alert")
 	for(var/obj/machinery/telecomms/T in GLOB.telecomms_list)
 		T.emp_act(EMP_HEAVY)
+	for(var/area/A in impacted_areas)
+		for(var/turf/open/T in A)
+			T.add_rad_e3d_overlay(20)
 
 /datum/weather/rad_storm/end()
+	for(var/area/A in impacted_areas)
+		for(var/turf/open/T in A)
+			T.remove_rad_e3d_overlay()
 	if(..())
 		return
 	priority_announce("The radiation threat has passed. Please return to your workplaces.", "Anomaly Alert")

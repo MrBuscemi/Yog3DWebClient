@@ -229,3 +229,10 @@ GLOBAL_LIST_INIT(nonreactive_gases, typecacheof(list(/datum/gas/oxygen, /datum/g
 	. = ..()
 	icon_state = state
 	alpha = alph
+
+//a workaround to get radiation to show during radstorms. Using plasma gas
+/obj/effect/overlay/radiation
+	icon_state = "plasma"
+	color = "#39ff14"
+/obj/effect/overlay/radiation/New(alph)
+	. = ..("plasma", alph)
