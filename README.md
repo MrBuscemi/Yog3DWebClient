@@ -1,5 +1,6 @@
 ________________________________________________________________________
 FIX March 28th, 2026 - Added Radiation overlay to FLOOR_PLANE to storms and any radiation waves that triggers plasma gas animation. Workaround for VIS_CONTENTS not workable in 3D
+________________________________________________________________________
 FIX ADDED: Sorry for those that downloaded before I fixed a missing a file that was not uploaded. If your build fails for not haing a changlog.html, then go over to the HTML folder in the main repo here and download the changelog.html file to add to yours. That was my bad.
 ________________________________________________________________________
 Hello!
