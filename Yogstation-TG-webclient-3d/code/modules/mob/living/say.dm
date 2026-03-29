@@ -269,6 +269,17 @@ GLOBAL_LIST_INIT(special_radio_keys, list(
 	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && stat != UNCONSCIOUS && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)) && can_hear())
 		create_chat_message(speaker, message_language, raw_message, spans)
 
+	// E3D Runechat send  data to 3D webclient
+	if(client && can_hear() && stat != UNCONSCIOUS)
+		var/speaker_voice = "says"
+		if(ishuman(speaker))
+			var/mob/living/carbon/human/H = speaker
+			if(H.dna && H.dna.species)
+				speaker_voice = H.dna.species.say_mod
+		else if(istype(speaker, /atom/movable/virtualspeaker))
+			speaker_voice = speaker.verb_say || "says"
+		var/e3d_ref = "\ref[speaker]"
+		src << output("[e3d_ref];[speaker_voice];[raw_message]", "e3d:runechat")
 
 	// Recompose message for AI hrefs, language incomprehension.
 	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods)
