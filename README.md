@@ -1,4 +1,6 @@
 ________________________________________________________________________
+FIX March 31st, 2026 - Added v1 of Right Click menu for webclient (basic verbs only -Examine, pick up, Pull, point, use)
+________________________________________________________________________
 FIX March 28th, 2026 - Added Radiation overlay to FLOOR_PLANE to radiation storms pr radiation waves. Now shows plasma gas on floor textures as radiation visuals in 3D. Workaround for VIS_CONTENTS not workable in 3D
 ________________________________________________________________________
 FIX ADDED: Sorry for those that downloaded before I fixed a missing a file that was not uploaded. If your build fails for not haing a changlog.html, then go over to the HTML folder in the main repo here and download the changelog.html file to add to yours. That was my bad.
@@ -23,11 +25,13 @@ V = Switch between 1st and 3rd Person modes
 
 CTRL + LEFT CLICK = Grab whatever is selected
 
-RIGHT CLICK DOES NOT WORK YET = yeah this part sucks. Major thing that needs to be worked on somehow. Below is workaround
+Right Click = Only basic verbs for now (Examine, pick up, Pull, point, use) - it has to be completely rebuilt as a TGUI menu. v1 only has these
 
 ALT + LEFT CLICK =  Shows all items on a spot in top right of screen. A workaround for picking things up somewhere that has multiple things layered on top of each other.
 
 
+F11 - use this in browser to go full screen
+F12 - UI toggle to make the screen less cluttered
 
                                                         TO RUN OFFLINE
 STEP 1:  DOWNGRADE BYOND
