@@ -79,6 +79,12 @@
 		return
 
 	var/list/modifiers = params2list(params)
+
+	// Webclient cant do Byond right click. This opens a TGUI menu instead 
+	if(modifiers["right"] && client?.connection == "web")
+		webclient_context_menu(A)
+		return
+
 	if(modifiers["shift"] && modifiers["middle"])
 		ShiftMiddleClickOn(A)
 		return
