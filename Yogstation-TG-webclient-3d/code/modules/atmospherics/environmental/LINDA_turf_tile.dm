@@ -33,6 +33,7 @@
 
 	var/list/atmos_overlay_types //gas IDs of current active gas overlays
 	var/atmos_e3d_overlay // current batch-overlay
+	var/active_rad_overlay
 	is_openturf = TRUE
 
 /turf/open/Initialize()
@@ -171,6 +172,23 @@
 				cut_overlay(atmos_e3d_overlay)
 			add_overlay(new_e3d_overlay)
 			src.atmos_e3d_overlay = new_e3d_overlay
+
+/turf/open/proc/add_rad_e3d_overlay(strength)
+	if(active_rad_overlay)
+		cut_overlay(active_rad_overlay)
+	var/alpha_val = clamp(round(strength * 3), 80, 220)
+	var/static/image/rad_image = image('icons/effects/atmospherics.dmi')
+	rad_image.icon_state = "plasma"
+	rad_image.color = "#cc44ff"
+	rad_image.alpha = alpha_val
+	rad_image.plane = -32767
+	active_rad_overlay = rad_image.appearance
+	add_overlay(active_rad_overlay)
+/turf/open/proc/remove_rad_e3d_overlay()
+	if(!active_rad_overlay)
+		return
+	cut_overlay(active_rad_overlay)
+	active_rad_overlay = null
 
 /proc/typecache_of_gases_with_no_overlays()
 	. = list()
