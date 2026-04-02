@@ -11,6 +11,8 @@ export class SvgUi {
 	crosshair = document.createElement("div");
 	mouse_label = document.createElement("div");
 	status_overlay = document.createElement("div");
+	runechat_messages: {elem: HTMLDivElement, speaker_ref: number, created: number, duration: number}[] = [];
+	runechat_container = document.createElement("div");
 	constructor(public client : ByondClient) {
 		this.ui_base.style.position = "absolute";
 		this.ui_base.style.left = "0px";
@@ -46,6 +48,16 @@ export class SvgUi {
 		this.status_overlay.style.display = "none";
 		document.body.appendChild(this.status_overlay);
 
+		this.runechat_container.style.position = "absolute";
+		this.runechat_container.style.left = "0";
+		this.runechat_container.style.top = "0";
+		this.runechat_container.style.width = "100%";
+		this.runechat_container.style.height = "100%";
+		this.runechat_container.style.pointerEvents = "none";
+		this.runechat_container.style.overflow = "hidden";
+		this.runechat_container.style.zIndex = "50";
+		document.body.appendChild(this.runechat_container);
+
 		window.addEventListener("mousedown", this.mousedown);
 		window.addEventListener("contextmenu", e => e.preventDefault());
 	}
@@ -57,6 +69,47 @@ export class SvgUi {
 		} else {
 			this.status_overlay.style.display = "none";
 		}
+	}
+
+	show_runechat(speaker_ref: number, say_mod: string, message: string) {
+		let elem = document.createElement("div");
+		elem.style.position = "absolute";
+		elem.style.pointerEvents = "none";
+		elem.style.fontFamily = "'Small Fonts', 'Pixel', monospace";
+		elem.style.fontSize = "14px";
+		elem.style.fontWeight = "bold";
+		elem.style.color = "#ffffff";
+		elem.style.textShadow = "1px 1px 2px #000000, -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000";
+		elem.style.padding = "2px 6px";
+		elem.style.borderRadius = "4px";
+		elem.style.backgroundColor = "rgba(0, 0, 0, 0.45)";
+		elem.style.transform = "translate(-50%, -100%)"; // center horizontally, anchor at bottom
+		elem.style.maxWidth = "300px";
+		elem.style.whiteSpace = "normal";
+		elem.style.wordWrap = "break-word";
+		elem.style.textAlign = "center";
+		elem.style.transition = "opacity 0.5s ease-out";
+		elem.style.zIndex = "100";
+		elem.textContent = message;
+
+		this.runechat_container.appendChild(elem);
+
+		let duration = Math.max(3000, Math.min(10000, message.length * 60));
+
+		// Push existing messages from the same speaker upward
+		for(let existing of this.runechat_messages) {
+			if(existing.speaker_ref === speaker_ref) {
+				let currentOffset = parseFloat(existing.elem.dataset.offsetY || "0");
+				existing.elem.dataset.offsetY = String(currentOffset + 28);
+			}
+		}
+
+		this.runechat_messages.push({
+			elem: elem,
+			speaker_ref: speaker_ref,
+			created: performance.now(),
+			duration: duration
+		});
 	}
 
 	chatpush_up_elems = new Set<Atom>();
@@ -104,6 +157,56 @@ export class SvgUi {
 			} else {
 				this.dynamic_icons.delete(elem);
 			}
+		}
+
+		// Update runechat floating text positions
+		let now = performance.now();
+		for(let i = this.runechat_messages.length - 1; i >= 0; i--) {
+			let msg = this.runechat_messages[i];
+			let age = now - msg.created;
+
+			// Remove expired messages
+			if(age > msg.duration) {
+				msg.elem.parentElement?.removeChild(msg.elem);
+				this.runechat_messages.splice(i, 1);
+				continue;
+			}
+
+			// Fade out in the last 500ms
+			if(age > msg.duration - 500) {
+				msg.elem.style.opacity = String(1 - (age - (msg.duration - 500)) / 500);
+			}
+
+			// Project speaker's 3D position to screen
+			let atom = this.client.atom_map.get(msg.speaker_ref);
+			if(!atom || !atom.last_draw_pos) {
+				msg.elem.style.display = "none";
+				continue;
+			}
+
+			let vec = [
+				atom.last_draw_pos[0],
+				atom.last_draw_pos[1],
+				atom.last_draw_pos[2] + .6, // offset upward above the character's head
+				1
+			] as vec4;
+			vec4.transformMat4(vec, vec, this.client.gl_holder.view_matrix);
+			vec4.transformMat4(vec, vec, this.client.gl_holder.proj_matrix);
+
+			if(isNaN(vec[0]) || isNaN(vec[1]) || isNaN(vec[3]) || vec[3] < 0.1) {
+				msg.elem.style.display = "none"; // behind camera or invalid
+				continue;
+			}
+
+			// Perspective divide -> NDC -> screen percentage
+			let screenX = (vec[0] / vec[3] + 1) * 50; // 0-100%
+			let screenY = (vec[1] / vec[3] + 1) * 50; // 0-100% from bottom
+
+			let offsetY = parseFloat(msg.elem.dataset.offsetY || "0");
+
+			msg.elem.style.display = "";
+			msg.elem.style.left = screenX + "%";
+			msg.elem.style.bottom = `calc(${screenY}% + ${offsetY}px)`;
 		}
 	}
 
