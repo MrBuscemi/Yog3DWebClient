@@ -1,7 +1,8 @@
+UPDATE April 2nd, 2026 - Added the Runechat fix that I made for my April Fools video with help from Claude Code. Wanted to be honest about it being added to the project. I ran out of time to do it myself to finish before April Fools. TextToSpeak will be added next as Claude also helped me with that. Fixing all the bugs still on it. Poly has a british accent and won't stop cursing on comms.
 ________________________________________________________________________
-FIX March 31st, 2026 - Added v1 of Right Click menu for webclient (basic verbs only -Examine, pick up, Pull, point, use)
+UPDATE March 31st, 2026 - Added v1 of Right Click menu for webclient (basic verbs only -Examine, pick up, Pull, point, use)
 ________________________________________________________________________
-FIX March 28th, 2026 - Added Radiation overlay to FLOOR_PLANE to radiation storms pr radiation waves. Now shows plasma gas on floor textures as radiation visuals in 3D. Workaround for VIS_CONTENTS not workable in 3D
+UPDATE March 28th, 2026 - Added Radiation overlay to FLOOR_PLANE to radiation storms pr radiation waves. Now shows plasma gas on floor textures as radiation visuals in 3D. Workaround for VIS_CONTENTS not workable in 3D
 ________________________________________________________________________
 FIX ADDED: Sorry for those that downloaded before I fixed a missing a file that was not uploaded. If your build fails for not haing a changlog.html, then go over to the HTML folder in the main repo here and download the changelog.html file to add to yours. That was my bad.
 ________________________________________________________________________
