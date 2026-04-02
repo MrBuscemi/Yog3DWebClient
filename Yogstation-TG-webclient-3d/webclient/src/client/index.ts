@@ -47,6 +47,9 @@ export class ByondClient {
 				this.has_quit = true;
 			}
 		});
+		document.addEventListener("contextmenu", (e) => {
+			e.preventDefault();
+		});
 		window.addEventListener("wheel", (e) => {
 			let delta_y = e.deltaY;
 			if(e.deltaMode == WheelEvent.DOM_DELTA_PIXEL) delta_y /= 100;
