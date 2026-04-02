@@ -782,6 +782,17 @@ export class ByondClient {
 			this.is_test_env = true;
 			return;
 		}
+		if(ctrl == "e3d:runechat") {
+			let parts = str.split(";");
+			if(parts.length >= 3) {
+				let ref_str = parts[0].replace(/[\[\]]/g, ""); // strip [0x...] brackets
+				let speaker_ref = parseInt(ref_str, 16);
+				let say_mod = parts[1];
+				let message = parts.slice(2).join(";"); // rejoin in case message contained semicolons
+				this.ui.show_runechat(speaker_ref, say_mod, message);
+			}
+			return;
+		}
 		if(ctrl == ":output") {
 			this.last_output = str;
 		} else {
