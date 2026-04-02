@@ -187,7 +187,7 @@ export class SvgUi {
 			let vec = [
 				atom.last_draw_pos[0],
 				atom.last_draw_pos[1],
-				atom.last_draw_pos[2] + 1.2, // offset upward above the character's head
+				atom.last_draw_pos[2] + .6, // offset upward above the character's head
 				1
 			] as vec4;
 			vec4.transformMat4(vec, vec, this.client.gl_holder.view_matrix);
