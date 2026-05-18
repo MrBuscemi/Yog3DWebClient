@@ -269,17 +269,30 @@ GLOBAL_LIST_INIT(special_radio_keys, list(
 	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && stat != UNCONSCIOUS && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)) && can_hear())
 		create_chat_message(speaker, message_language, raw_message, spans)
 
-	// E3D Runechat send  data to 3D webclient
+	// E3D Runechat: send structured data to 3D webclient
 	if(client && can_hear() && stat != UNCONSCIOUS)
 		var/speaker_voice = "says"
+		var/speaker_gender = "male"
 		if(ishuman(speaker))
 			var/mob/living/carbon/human/H = speaker
-			if(H.dna && H.dna.species)
+			if(H.gender == FEMALE)
+				speaker_gender = "female"
+			if(H.mind && H.mind.assigned_role == "Clown")
+				speaker_voice = "honks"
+			else if(H.dna && H.dna.species)
 				speaker_voice = H.dna.species.say_mod
 		else if(istype(speaker, /atom/movable/virtualspeaker))
 			speaker_voice = speaker.verb_say || "says"
+		var/volume_mod = "normal"
+		if(radio_freq)
+			volume_mod = "radio"
+		else if(message_mods[WHISPER_MODE])
+			volume_mod = "whisper"
+		else if(findtext(raw_message, "!!"))
+			volume_mod = "yell"
 		var/e3d_ref = "\ref[speaker]"
-		src << output("[e3d_ref];[speaker_voice];[raw_message]", "e3d:runechat")
+		var/e3d_text = lang_treat(speaker, message_language, raw_message, spans, message_mods, TRUE)
+		src << output("[e3d_ref];[speaker_voice];[volume_mod];[speaker_gender];[e3d_text]", "e3d:runechat")
 
 	// Recompose message for AI hrefs, language incomprehension.
 	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods)
