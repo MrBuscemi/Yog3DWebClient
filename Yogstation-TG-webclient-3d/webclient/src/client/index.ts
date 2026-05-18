@@ -7,6 +7,7 @@ import { despam_promise } from "./promise_despammer";
 import { BatchRenderPlan, BillboardRenderPlan, BoxRenderPlan, FloorRenderPlan, SmoothWallRenderPlan, WallmountRenderPlan } from "./render_types";
 import { SoundCommand, SoundPlayer } from "./sound";
 import { SvgUi } from "./svg_ui";
+import { TTSManager } from "./tts";
 import { GlHolder } from "./webgl";
 import "./index.css";
 import { get_webgl_stats } from "./stat_collection";
@@ -18,6 +19,7 @@ export class ByondClient {
 	atom_map = new Map<number, Atom>();
 	gl_holder : GlHolder;
 	sound_player : SoundPlayer;
+	tts : TTSManager;
 	ui : SvgUi;
 	is_test_env = false;
 	eye_x = 0;
@@ -47,9 +49,6 @@ export class ByondClient {
 				this.has_quit = true;
 			}
 		});
-		document.addEventListener("contextmenu", (e) => {
-			e.preventDefault();
-		});
 		window.addEventListener("wheel", (e) => {
 			let delta_y = e.deltaY;
 			if(e.deltaMode == WheelEvent.DOM_DELTA_PIXEL) delta_y /= 100;
@@ -72,6 +71,13 @@ export class ByondClient {
 			}
 			if(e.code == "KeyV") {
 				this.gl_holder.third_person_mode = !this.gl_holder.third_person_mode;
+				e.preventDefault();
+				return;
+			}
+			if(e.code == "KeyT" && e.shiftKey) {
+				let on = this.tts.toggle();
+				this.ui.set_status_overlay(on ? "TTS Enabled" : "TTS Disabled");
+				setTimeout(() => this.ui.set_status_overlay(""), 2000);
 				e.preventDefault();
 				return;
 			}
@@ -160,6 +166,7 @@ export class ByondClient {
 		this.gl_holder = new GlHolder(this);
 		this.ui = new SvgUi(this);
 		this.sound_player = new SoundPlayer(this);
+		this.tts = new TTSManager(this);
 		this.ui.set_status_overlay("Connecting...");
 		this.frameLoop();
 		this.gl_holder.canvas.addEventListener("dblclick", (e) => {
@@ -787,12 +794,23 @@ export class ByondClient {
 		}
 		if(ctrl == "e3d:runechat") {
 			let parts = str.split(";");
-			if(parts.length >= 3) {
+			if(parts.length >= 5) {
 				let ref_str = parts[0].replace(/[\[\]]/g, ""); // strip [0x...] brackets
 				let speaker_ref = parseInt(ref_str, 16);
 				let say_mod = parts[1];
-				let message = parts.slice(2).join(";"); // rejoin in case message contained semicolons
+				let volume_mod = parts[2] as "normal" | "yell" | "whisper" | "radio";
+				let gender = parts[3] as "male" | "female";
+				let message = parts.slice(4).join(";"); // rejoin in case message contained semicolons
 				this.ui.show_runechat(speaker_ref, say_mod, message);
+				this.tts.speak(speaker_ref, say_mod, volume_mod, gender, message);
+			} else if(parts.length >= 3) {
+				// Backwards compat: old payload without volume_mod/gender
+				let ref_str = parts[0].replace(/[\[\]]/g, "");
+				let speaker_ref = parseInt(ref_str, 16);
+				let say_mod = parts[1];
+				let message = parts.slice(2).join(";");
+				this.ui.show_runechat(speaker_ref, say_mod, message);
+				this.tts.speak(speaker_ref, say_mod, "normal", "male", message);
 			}
 			return;
 		}
